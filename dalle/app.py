@@ -44,5 +44,4 @@ with gr.Blocks() as dalle:
 
 if __name__ == '__main__':
     dalle.launch(server_port=int(os.getenv('PORT', 7860)),
-                 server_name='0.0.0.0',
-                 prevent_thread_lock=True)
+                 server_name='0.0.0.0')
