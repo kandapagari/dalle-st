@@ -11,10 +11,11 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def gen_image(prompt, size="512x512"):
     response = openai.Image.create(prompt=prompt,
-                                   n=5,
+                                   n=10,
                                    size=size,
                                    response_format="url")
-    images = [item['url'] for item in response.to_dict()["data"]]
+    images = [(item['url'], f'label {i}')
+              for i, item in enumerate(response.to_dict()["data"])]
     return images
 
 
@@ -26,7 +27,10 @@ with gr.Blocks() as dalle:
                               max_lines=1,
                               placeholder="Enter your prompt",
                               container=False)
-            btn = gr.Button("Generate image")
+            btn = gr.Button("Generate image",
+                            size="m",
+                            variant='primary',
+                            scale=0)
 
         gallery = gr.Gallery(label="Generated images",
                              show_label=False,
@@ -39,4 +43,6 @@ with gr.Blocks() as dalle:
     btn.click(gen_image, text, gallery)
 
 if __name__ == '__main__':
-    dalle.launch()
+    dalle.launch(server_port=int(os.getenv('PORT', 7860)),
+                 server_name='0.0.0.0',
+                 prevent_thread_lock=True)
