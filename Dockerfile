@@ -12,12 +12,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY . /workdir
 
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install poetry && poetry config virtualenvs.create false
+RUN poetry install --no-dev
 
 ENV PORT=5000
 
-EXPOSE $PORT
+EXPOSE 5000
 
 HEALTHCHECK CMD curl --fail http://localhost:5000/_stcore/health
 
-ENTRYPOINT [ "streamlit", "run" , "dalle/app.py", "--server.port", $PORT, "--server.address=0.0.0.0"]
+ENTRYPOINT [ "python", "dalle/app.py"]
