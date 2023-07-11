@@ -1,0 +1,9 @@
+*.pyc
+*.pyd
+*.pyo
+.cache
+.coverage
+.coverage.*
+.git
+__pycache__
+assets

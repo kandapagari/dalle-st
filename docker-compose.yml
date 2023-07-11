@@ -5,6 +5,7 @@ services:
       context: .
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
+      - ./assets:/workdir/assets
     network_mode: host
     restart: always
     stdin_open: true
