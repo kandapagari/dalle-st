@@ -42,6 +42,7 @@ with gr.Blocks() as dalle:
                               interactive=True,
                               container=False,
                               scale=3)
+
             size = gr.Dropdown(label="Image size",
                                container=False,
                                value="512x512",
@@ -49,6 +50,7 @@ with gr.Blocks() as dalle:
                                elem_id='size',
                                choices=["256x256", "512x512", "1024x1024"],
                                scale=1)
+
             num_images = gr.Number(label="Number of images",
                                    container=False,
                                    interactive=True,
