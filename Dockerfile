@@ -19,6 +19,4 @@ ENV PORT=5000
 
 EXPOSE 5000
 
-HEALTHCHECK CMD curl --fail http://localhost:5000/_stcore/health
-
 ENTRYPOINT [ "python", "dalle/app.py"]
