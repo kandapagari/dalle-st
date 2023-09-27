@@ -16,22 +16,17 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 async def get_image_async(urls: str) -> list[Image.Image]:
     async with aiohttp.ClientSession() as session:
-        tasks = []
-        for url in urls:
-            tasks.append(asyncio.create_task(session.get(url)))
+        tasks = [asyncio.create_task(session.get(url)) for url in urls]
         responses = await asyncio.gather(*tasks)
-        images = [Image.open(BytesIO(await response.read())) for response in responses]
-        return images
+        return [Image.open(BytesIO(await response.read())) for response in responses]
 
 
 async def gen_image(prompt: str, size: str, n: int):
-    response = openai.Image.create(prompt=prompt,
-                                   n=int(n),
-                                   size=size,
-                                   response_format="url")
+    response = openai.Image.create(
+        prompt=prompt, n=n, size=size, response_format="url"
+    )
     urls = [item['url'] for item in response.get("data")]
-    images = await get_image_async(urls)
-    return images
+    return await get_image_async(urls)
 
 
 with gr.Blocks() as dalle:
@@ -61,7 +56,7 @@ with gr.Blocks() as dalle:
 
         button = gr.Button(value="Generate image",
                            container=False,
-                           show_label=True,
+                           # show_label=True,
                            variant='primary',
                            scale=1)
 
